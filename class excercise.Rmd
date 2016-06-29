@@ -67,3 +67,61 @@ get.variables(lpmodel)
 ```
 
 We should all invest in `88.88889` corn
+
+#### Simulation 
+
+```{r}
+
+library(simmer)
+
+create_trajectory("sandwich shop") %>% 
+    seize("sandwich_maker", 1) %>% 
+    timeout(function() rnorm(1, 5)) %>% 
+    release("sandwich_maker", 1) -> t0
+
+```
+
+```{r}
+
+simmer("Sandwich Joe") %>% 
+    add_resource("sandwich_maker", 1) %>% 
+    add_resource("sandwich_maker_2", 3) %>% 
+    add_generator("customer", t0, function() rnorm(1, 10, 1)) -> env
+
+env %>% run(until=120)
+
+```
+
+```{r}
+
+plot_evolution_arrival_times(env, type = "waiting_time")
+
+```
+
+
+```{r}
+
+env %>% run(until=200)
+
+```
+
+```{r}
+
+plot_evolution_arrival_times(env, type = "waiting_time")
+
+```
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
